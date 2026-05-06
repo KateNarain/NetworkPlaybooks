@@ -14,8 +14,8 @@ tasks:
       set_fact:
         netstat_home_text: >-
           {{ netstat_home.stdout | default(netstat_home.msg | default(netstat_home | to_nice_yaml)) }}
-  -name: display netstat home
-  debuf:
-    msg: "{{ netstat_home_text }}"
+  - name: display netstat home
+    debug:
+      msg: "{{ netstat_home_text }}"
 
   
