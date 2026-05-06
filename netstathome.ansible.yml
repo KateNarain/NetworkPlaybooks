@@ -1,4 +1,3 @@
----
 - name: Get TSO netstat home output from a z/OS LPAR
   hosts: all
   environment: "{{ environment_vars | d() }}" 
