@@ -1,0 +1,39 @@
+- name: Shutdown and Restart Ansible SSHD
+  hosts: zos_hosts
+  gather_facts: no
+
+  vars:
+    sshd_task_name: "SSHDANS3"   # Change to SSHD23 for Symetra LPARs
+    restart_command: "S SSHDANS" # Change to "S SSHD2" if needed
+
+  tasks:
+
+    - name: Get ASID of SSHD task
+      zos_operator:
+        cmd: "D A,{{ sshd_task_name }}"
+      register: asid_output
+
+    - name: Extract ASID
+      set_fact:
+        asid: "{{ asid_output.content | regex_search('A=([0-9A-F]+)', '\\1') }}"
+
+    - name: Get PID using ASID
+      zos_operator:
+        cmd: "D OMVS,ASID={{ asid }}"
+      register: pid_output
+
+    - name: Extract PID
+      set_fact:
+        pid: "{{ pid_output.content | regex_search('PID=([0-9]+)', '\\1') }}"
+
+    - name: Terminate SSHD process
+      zos_operator:
+        cmd: "F BPXOINIT,TERM={{ pid }}"
+
+    - name: Wait for restart (TCPIP Autolog)
+      pause:
+        seconds: 300
+
+    - name: Start SSHD task (if needed)
+      zos_operator:
+        cmd: "{{ restart_command }}"
