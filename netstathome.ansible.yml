@@ -1,24 +1,11 @@
 ---
 - name: Get TSO netstat home output from a z/OS LPAR
-  hosts: zos
-  gather_facts: no
-  vars:
-    tso_command: "netstat home"
-
-  tasks:
-    - name: Execute TSO command
-      ibm.ibm_zos_core.zos_tso:
-        command: "{{ tso_command }}"
-        userid: "{{ zos_tso_user | default(omit) }}"
-        password: "{{ zos_tso_password | default(omit) }}"
-      register: netstat_home_output
-
-    - name: Show netstat home output
-      debug:
-        msg: "\n{{ netstat_home_output.stdout | default('No output returned') }}"
-
-    - name: Save netstat home output to a local file
-      copy:
-        content: "{{ netstat_home_output.stdout | default('') }}"
-        dest: "./netstat_home_output.txt"
-        mode: '0644'
+  hosts: all
+  environment: "{{ environment_vars | d() }}" 
+  gather_facts: false
+  collections: 
+    - ibm.ibm_zos_core
+tasks: 
+  - name: netstat home
+  zos_operator:
+    cmd: 'D TCPIP,,N,HOME'
