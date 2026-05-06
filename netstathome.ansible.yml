@@ -5,17 +5,17 @@
   gather_facts: false
   collections: 
     - ibm.ibm_zos_core
-tasks: 
-  - name: netstat home
-  zos_operator:
-    cmd: 'D TCPIP,,N,HOME'
-  register: netstat_home
-  - name: Build text source from netstat_home (stdout/msg/yaml)
-      set_fact:
-        netstat_home_text: >-
-          {{ netstat_home.stdout | default(netstat_home.msg | default(netstat_home | to_nice_yaml)) }}
-  - name: display netstat home
-    debug:
-      msg: "{{ netstat_home_text }}"
+  tasks: 
+    - name: netstat home
+    zos_operator:
+      cmd: 'D TCPIP,,N,HOME'
+    register: netstat_home
+    - name: Build text source from netstat_home (stdout/msg/yaml)
+        set_fact:
+          netstat_home_text: >-
+            {{ netstat_home.stdout | default(netstat_home.msg | default(netstat_home | to_nice_yaml)) }}
+    - name: display netstat home
+      debug:
+        msg: "{{ netstat_home_text }}"
 
   
