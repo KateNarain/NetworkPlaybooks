@@ -4,4 +4,4 @@
   register: netstat_home
 
 - debug:
-    msg: "{{ netstat_home.content | join('\n') }}"
+    var: netstat_home
