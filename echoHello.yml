@@ -1,0 +1,16 @@
+---
+- name: test shell
+  hosts: all
+  gather_facts: false
+  collections:
+    - ibm.ibm_zos_core
+
+  tasks:
+    - name: test shell
+      zos_shell:
+        cmd: "echo hello"
+      register: test
+
+    - name: Show test output
+      debug:
+        msg: "\n{{ test.stdout | default('No output returned') }}"
