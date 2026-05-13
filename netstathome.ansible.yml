@@ -1,23 +1,7 @@
-- name: Get TSO netstat home output from a z/OS LPAR
-  hosts: all
-  gather_facts: false
-  collections:
-    - ibm.ibm_zos_core
+- name: netstat home
+  zos_operator:
+    cmd: 'D TCPIP,,N,HOME'
+  register: netstat_home
 
-  tasks:
-    - name: netstat home
-      zos_operator:
-        cmd: 'D TCPIP,,N,HOME'
-      register: netstat_home
-
-    - name: display netstat home
-      debug:
-        var: netstat_home
-
-    - name: Save netstat home output to a local file
-      copy:
-        content: "{{ netstat_home.content | join('\n') }}"
-        dest: "./netstat_home_output.txt"
-        mode: '0644'
-      delegate_to: localhost
-      run_once: true
+- debug:
+    msg: "{{ netstat_home.content | join('\n') }}"
