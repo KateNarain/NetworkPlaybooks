@@ -1,8 +1,7 @@
 - name: netstat home
   zos_operator:
-    cmd: 'D TCPIP,TCPIP,N,HOME'
+    cmd: 'D TCPIP,,N,HOME'
   register: netstat_home
-  ignore_errors: yes
 
 - debug:
-    var: netstat_home
+    msg: "{{ netstat_home.content | default([]) | join('\n') }}"
