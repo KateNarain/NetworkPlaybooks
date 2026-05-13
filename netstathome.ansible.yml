@@ -8,8 +8,9 @@
     - name: netstat home
       zos_operator:
         cmd: 'D TCPIP,,N,HOME'
+        wait_time: 10
       register: netstat_home
 
-    - name: display netstat home
+    - name: Show NETSTAT HOME output
       debug:
-        var: netstat_home
+        msg: "{{ netstat_home.content | default(['NO OUTPUT']) | join('\n') }}"
