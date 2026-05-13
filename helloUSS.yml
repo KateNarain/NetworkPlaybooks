@@ -1,0 +1,7 @@
+- name: test shell
+  zos_shell:
+    cmd: "echo hello"
+  register: test
+
+- debug:
+    var: test.stdout
