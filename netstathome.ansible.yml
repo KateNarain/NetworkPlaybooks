@@ -1,7 +1,15 @@
-- name: netstat home
-  zos_operator:
-    cmd: 'D TCPIP,,N,HOME'
-  register: netstat_home
+- name: Get TSO netstat home output from a z/OS LPAR
+  hosts: all
+  gather_facts: false
+  collections:
+    - ibm.ibm_zos_core
 
-- debug:
-    msg: "{{ netstat_home.content | default([]) | join('\n') }}"
+  tasks:
+    - name: netstat home
+      zos_operator:
+        cmd: 'D TCPIP,,N,HOME'
+      register: netstat_home
+
+    - name: display netstat home
+      debug:
+        var: netstat_home
