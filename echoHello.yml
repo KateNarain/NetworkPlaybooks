@@ -1,4 +1,3 @@
----
 - name: test shell
   hosts: all
   gather_facts: false
