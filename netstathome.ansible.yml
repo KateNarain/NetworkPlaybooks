@@ -13,3 +13,9 @@
     - name: display netstat home
       debug:
         var: netstat_home
+        
+    - name: Save netstat home output to a local file
+     copy:
+       content: "{{ netstat_home_output.stdout | default('') }}"
+       dest: "./netstat_home_output.txt"
+       mode: '0644'
