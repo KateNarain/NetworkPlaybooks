@@ -1,0 +1,4 @@
+- name: Run TSO netstat home via shell (fallback)
+  ansible.builtin.shell: |
+    echo 'netstat home' | tso
+  register: netstat_home
